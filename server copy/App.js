@@ -8,7 +8,7 @@ import NotesScreen from "./screens/NotesScreen";
 
 export default function App (){
     const user = 5269507;
-
+    {/*hello!*/}
   return(
     <View>
       <Plaza user={user}/>
