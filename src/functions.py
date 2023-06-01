@@ -70,8 +70,8 @@ def create_account(username: str, password: str, email: str, mm: int, dd: int, y
 
     if not ((datetime.now() - date).days / 365) >= 13:
         raise NotOldEnough()
-
-    if not (check := email_regex.search(email)) or not (check.end() - check.start() == len(email)):
+    check = email_regex.search(email)
+    if not (check) or not (check.end() - check.start() == len(email)):
         raise EmailNotProper()
     
     id = lambda: randint(1000000, 9999999)
