@@ -107,3 +107,6 @@ def get_author_finds(id):
 
     results = [x for x in results if x['id'] == int(id)]
     return jsonify(results)
+
+if __name__ == "__main__":
+    app.run()
