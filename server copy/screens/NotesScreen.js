@@ -40,21 +40,6 @@ const WIDTH = Dimensions.get('window').width
 
 export default function NotesScreen(props) {      
       const [data, setData] = useState([])
-
-      useEffect(() => {
-        fetch(`https://find-a-champ-working-version.onrender.com/notes/get/${String(props.user)}`).then(
-          res => res.json()
-        ).then(
-          data => {
-            setData(data)
-          }
-        )
-      }, [])  
-
-      const [img, setimg] = useState(0);
-
-      obj = data[img]
-
       const [note, setNote] = useState("")
       const [date, setDate] = useState("")
 
@@ -68,46 +53,66 @@ export default function NotesScreen(props) {
           }
         }).then(resp => resp.json())
       }
+
+      useEffect(() => {
+        fetch(`https://find-a-champ-working-version.onrender.com/notes/get/${String(props.user)}`).then(
+          res => res.json()
+        ).then(
+          data => {
+            setData(data)
+          }
+        )
+      }, [])  
+
+      const [img, setimg] = useState(0);
+
       
-        onchange = (nativeEvent) => {
-          if(nativeEvent){
-            const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-            if (slide !== img && slide < data.length){
-              setimg(slide)
-              setNote(obj[slide]['content'])
-              setDate(obj[slide]['date'])
+      if(data.length === 0){
+        console.log('negative')
+      }
+      else{
+        obj = data[img]
+        
+          onchange = (nativeEvent) => {
+            if(nativeEvent){
+              const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+              if (slide !== img && slide < data.length){
+                setimg(slide)
+                setNote(data[img]['content'])
+                setDate(data[img]['date'])
+              }
             }
           }
-        }
-
-  return (
-    <View>
-    <ImageBackground style={{flex: 1, justifyContent:'center', width: Dimensions.get('window').width, height: Dimensions.get('window').height}} source={IMAGE} resizeMode='cover'/>
-    <ScrollView style={styles.whole}>
-        <SafeAreaView style={{flex: 1, height: HEIGHT}}>
-            <Text style={styles.title_text}>Notes</Text>
-          <View style={styles.ovr_wrap}>
-            <ScrollView 
-            onScroll={({nativeEvent}) => onchange(nativeEvent)}
-            showsHorizontalScrollIndicator={true}
-            pagingEnabled
-            horizontal
-            style={styles.wrap}>
-              {
-                data.map((e, index) => <Image key={e['url']} resizeMode='cover' style={styles.wrap} source={{uri: e['url']}}/>)
-              }
-            </ScrollView>
-          </View>
-            <View style={{flexDirection:'column', alignItems:'flex-start', top:10, paddingLeft:25}}>
-            <Text style={{color: '#493003', alignSelf: 'flex-start'}}>{date_f(obj['date'])}</Text>
-            <Text style={{fontWeight: 'bold', color: '#493003', paddingBottom: HEIGHT-0.98*HEIGHT}}>{obj['content']}</Text>            
-            <TextInput placeholder='Enter your note! (Max 500 characters)' placeholderTextColor='gray' style={{backgroundColor: 'white', borderRadius: 10, top: 10, height: HEIGHT-0.7*HEIGHT, marginBottom: 10, padding: 15, paddingTop: 15, width: WIDTH-WIDTH*0.15, alignSelf:'flex-start',}} numberOfLines={12} multiline={true} editable={true} maxLength={500} onChangeText={text => setNote(text)}/>
-            <Button title="Save Note!" color="#493003" borderRadius={10} onPress={() => insertContent()}/>
-          </View>
-        </SafeAreaView>
-    </ScrollView>
-    </View>
-  )
+  
+    return (
+      <View>
+      <ImageBackground style={{flex: 1, justifyContent:'center', width: Dimensions.get('window').width, height: Dimensions.get('window').height}} source={IMAGE} resizeMode='cover'/>
+      <ScrollView style={styles.whole}>
+          <SafeAreaView style={{flex: 1, height: HEIGHT}}>
+              <Text style={styles.title_text}>Notes</Text>
+            <View style={styles.ovr_wrap}>
+              <ScrollView 
+              onScroll={({nativeEvent}) => onchange(nativeEvent)}
+              showsHorizontalScrollIndicator={true}
+              pagingEnabled
+              horizontal
+              style={styles.wrap}>
+                {
+                  data.map((e, index) => <Image key={e['url']} resizeMode='cover' style={styles.wrap} source={{uri: e['url']}}/>)
+                }
+              </ScrollView>
+            </View>
+              <View style={{flexDirection:'column', alignItems:'flex-start', top:10, paddingLeft:25}}>
+              <Text style={{color: '#493003', alignSelf: 'flex-start'}}>{date_f(obj['date'])}</Text>
+              <Text style={{fontWeight: 'bold', color: '#493003', paddingBottom: HEIGHT-0.98*HEIGHT}}>{obj['content']}</Text>            
+              <TextInput placeholder='Enter your note! (Max 500 characters)' placeholderTextColor='gray' style={{backgroundColor: 'white', borderRadius: 10, top: 10, height: HEIGHT-0.7*HEIGHT, marginBottom: 10, padding: 15, paddingTop: 15, width: WIDTH-WIDTH*0.15, alignSelf:'flex-start',}} numberOfLines={12} multiline={true} editable={true} maxLength={500} onChangeText={text => setNote(text)}/>
+              <Button title="Save Note!" color="#493003" borderRadius={10} onPress={() => insertContent()}/>
+            </View>
+          </SafeAreaView>
+      </ScrollView>
+      </View>
+    )
+      }
 }
 
 const styles = StyleSheet.create({

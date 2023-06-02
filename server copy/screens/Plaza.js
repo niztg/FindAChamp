@@ -33,18 +33,34 @@ useEffect(() => {
   )
 }, [])  
 
+const [dataa, setDataa] = useState([])
+useEffect(() => {
+  fetch(`https://find-a-champ-working-version.onrender.com/finds/get/${String(props.user)}`).then(
+    res => res.json()
+  ).then(
+    dataa => {
+      setDataa(dataa)
+    }
+  )
+}, [])
+
+if(data.length === 0 || dataa.length === 0){
+  console.log('negative')
+}
+else{
   return (
     <View>
   <ImageBackground style={{flex: 1, justifyContent:'center', width: Dimensions.get('window').width, height: Dimensions.get('window').height}} source={IMAGE} resizeMode='cover'/>
     <SafeAreaView>
       <ScrollView>
       <View><Text  style={styles.title_text} >Good morning, {data['account_name']}.</Text></View>
-      <HomeImages user={data['account_name']} images={props.slides}/>
+      <HomeImages user={data['account_name']} images={dataa}/>
       <Line/>
       </ScrollView>
     </SafeAreaView>
     </View>
   )
+}
 };
 
 // stylesheets
