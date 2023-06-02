@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { 
   View, 
   StyleSheet, 
@@ -12,31 +12,9 @@ import {
   Button
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import Line from '../components/Line'
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
-
-const notes = [
-    {
-      author: 5269507,
-      content: "This is one red mushroom!",
-      date: "2023-05-08T05:23:16.902662",
-      url: "https://cdn.britannica.com/90/236590-050-27422B8D/Close-up-of-mushroom-growing-on-field.jpg"
-    },
-    {
-      author: 5269507,
-      content: "Wow",
-      date: "2013-08-09T05:23:16.902662",
-      url: "https://cdn.britannica.com/86/237086-050-3F816C87/mushroom-cultivation-farm.jpg"
-    },
-    {
-      author: 5269507,
-      content: "I am at a loss for words.",
-      date: "2003-11-19T05:23:16.902662",
-      url: "https://static.scientificamerican.com/sciam/cache/file/B0A32197-970A-43DE-803CAD57373C78D6.jpg"
-    }
-    ]
     
     const months = {
       0: 'January',
@@ -53,26 +31,57 @@ const notes = [
       11: 'December'
     }
     
-    function date(date_str) {
+    function date_f(date_str) {
       d = new Date(date_str);
       return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
     }
 
     const IMAGE = {uri: 'https://i.imgur.com/9pJlwyq.png'}
 
-export default function NotesScreen() {
-    const [img, setimg] = useState(0);
+export default function NotesScreen(props) {      
+      const [data, setData] = useState([])
 
-    obj = notes[img]
-    
-      onchange = (nativeEvent) => {
-        if(nativeEvent){
-          const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-          if (slide !== img && slide < notes.length){
-            setimg(slide)
+      useEffect(() => {
+        fetch(`https://find-a-champ-working-version.onrender.com/notes/get/${String(props.user)}`).then(
+          res => res.json()
+        ).then(
+          data => {
+            setData(data)
+          }
+        )
+      }, [])  
+
+      const [img, setimg] = useState(0);
+
+      obj = data[img]
+
+      const [note, setNote] = useState("")
+      const [date, setDate] = useState("")
+
+      const insertContent = () => {
+        fetch(`https://find-a-champ-working-version.onrender.com/edit/${String(props.user)}/${String(date)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application.json',
+            body: JSON.stringify({content: note})
+
+          }
+        }).then(resp => resp.json())
+      }
+      
+        onchange = (nativeEvent) => {
+          if(nativeEvent){
+            const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+            if (slide !== img && slide < data.length){
+              setimg(slide)
+              setNote(obj[slide]['content'])
+              setUrl(obj[slide]['url'])
+              setDate(obj[slide]['date'])
+              setAuthor(obj[slide]['author'])
+            }
           }
         }
-      }
+
   return (
     <View>
     <ImageBackground style={{flex: 1, justifyContent:'center', width: Dimensions.get('window').width, height: Dimensions.get('window').height}} source={IMAGE} resizeMode='cover'/>
@@ -87,15 +96,15 @@ export default function NotesScreen() {
             horizontal
             style={styles.wrap}>
               {
-                notes.map((e, index) => <Image key={e['url']} resizeMode='cover' style={styles.wrap} source={{uri: e['url']}}/>)
+                data.map((e, index) => <Image key={e['url']} resizeMode='cover' style={styles.wrap} source={{uri: e['url']}}/>)
               }
             </ScrollView>
           </View>
             <View style={{flexDirection:'column', alignItems:'flex-start', top:10, paddingLeft:25}}>
-            <Text style={{color: '#493003', alignSelf: 'flex-start'}}>{date(obj['date'])}</Text>
+            <Text style={{color: '#493003', alignSelf: 'flex-start'}}>{date_f(obj['date'])}</Text>
             <Text style={{fontWeight: 'bold', color: '#493003', paddingBottom: HEIGHT-0.98*HEIGHT}}>{obj['content']}</Text>            
-            <TextInput placeholder='Enter your note! (Max 500 characters)' placeholderTextColor='gray' style={{backgroundColor: 'white', borderRadius: 10, top: 10, height: HEIGHT-0.7*HEIGHT, marginBottom: 10, padding: 15, paddingTop: 15, width: WIDTH-WIDTH*0.15, alignSelf:'flex-start',}} numberOfLines={12} multiline={true} editable={true} maxLength={500}/>
-            <Button title="Save Note!" color="#493003" borderRadius={10}/>
+            <TextInput placeholder='Enter your note! (Max 500 characters)' placeholderTextColor='gray' style={{backgroundColor: 'white', borderRadius: 10, top: 10, height: HEIGHT-0.7*HEIGHT, marginBottom: 10, padding: 15, paddingTop: 15, width: WIDTH-WIDTH*0.15, alignSelf:'flex-start',}} numberOfLines={12} multiline={true} editable={true} maxLength={500} onChangeText={text => setNote(text)}/>
+            <Button title="Save Note!" color="#493003" borderRadius={10} onPress={() => insertContent()}/>
           </View>
         </SafeAreaView>
     </ScrollView>

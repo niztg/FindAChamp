@@ -1,17 +1,27 @@
-import { StyleSheet, View } from "react-native";
+import { View, Text } from "react-native";
 
 
-import React from 'react';
+import {React, useState, useEffect} from 'react';
 import Account from "./screens/Accounts";
 import Plaza from "./screens/Plaza"
 import NotesScreen from "./screens/NotesScreen";
 
 export default function App (){
     const user = 5269507;
-    {/*hello!11111*/}
+    
+    const [data, setData] = useState([])
+    useEffect(() => {
+      fetch(`https://find-a-champ-working-version.onrender.com/finds/get/${String(user)}`).then(
+        res => res.json()
+      ).then(
+        data => {
+          setData(data)
+        }
+      )
+    }, [])
   return(
     <View>
-      <Plaza user={user}/>
+      <NotesScreen user={user} slides={data}/>
     </View>
   );
   

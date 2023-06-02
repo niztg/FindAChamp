@@ -7,15 +7,11 @@ import {
     StyleSheet, 
     Dimensions, 
     Image, 
-    TouchableOpacity,
-    ImageBackground
-
+    TouchableOpacity
   } from 'react-native'
   
   const WIDTH = Dimensions.get('window').width
   const HEIGHT = Dimensions.get('window').height
-
-  const IMAGE = {uri: 'https://i.imgur.com/9pJlwyq.png'}
 
   const months = {
     0: 'January',
@@ -49,39 +45,19 @@ import {
 
 
 class HomeImages extends Component {
+current = 0
+state = {
+    url: this.props.images[this.current]['url'],
+    name: this.props.images[this.current]['species'],
+    date: this.props.images[this.current]['found']
+}
 
-    images = [
-        {
-            url: "https://cdn.britannica.com/90/236590-050-27422B8D/Close-up-of-mushroom-growing-on-field.jpg", 
-            species: "Mushrooms.", 
-            found: "2023-05-08T05:23:16.902662"
-        }, 
-        {
-            url: "https://cdn.britannica.com/86/237086-050-3F816C87/mushroom-cultivation-farm.jpg", 
-            species: "Da white ones", 
-            found: "2013-08-09T05:23:16.902662"
-          },
-          {
-            url: "https://static.scientificamerican.com/sciam/cache/file/B0A32197-970A-43DE-803CAD57373C78D6.jpg",
-            species: "butterfly mushrooms",
-            found: "2003-11-19T05:23:16.902662"
-          }
-    ]
+change = () => {
+    var n = option(this.props.images, this.current)
+    this.setState({url: this.props.images[n]['url'], name: this.props.images[n]['species'], date: this.props.images[n]['found']});
+    this.current=n;
 
-    current = 0
-    state = {
-        url: this.images[this.current]['url'],
-        name: this.images[this.current]['species'],
-        date: this.images[this.current]['found']
-    }
-    
-    change = () => {
-        var n = option(this.images, this.current)
-        this.setState({url: this.images[n]['url'], name: this.images[n]['species'], date: this.images[n]['found']});
-        this.current=n;
-
-    };
-    
+};
     render() {
         return (
             <SafeAreaView>
