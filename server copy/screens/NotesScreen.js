@@ -75,9 +75,7 @@ export default function NotesScreen(props) {
             if (slide !== img && slide < data.length){
               setimg(slide)
               setNote(obj[slide]['content'])
-              setUrl(obj[slide]['url'])
               setDate(obj[slide]['date'])
-              setAuthor(obj[slide]['author'])
             }
           }
         }
