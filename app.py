@@ -108,5 +108,13 @@ def get_author_finds(id):
     results = [x for x in results if x['id'] == int(id)]
     return jsonify(results)
 
+@app.route('/edit/<id>/<date>', methods=['POST'])
+def add_note(id, date):
+    user_ = notes.query.filter_by(author=int(id), date=date)
+
+    user_.content = request.json('content')
+
+    db.session.commit()
+
 if __name__ == "__main__":
     app.run(host='http://192.168.86.164', port=19000, debug=True)
