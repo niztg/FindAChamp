@@ -161,4 +161,5 @@ def add_note(id, date):
     db.session.commit()
 
 if __name__ == "__main__":
+    db.create_all()
     app.run(host='http://192.168.86.164', port=19000, debug=True)
