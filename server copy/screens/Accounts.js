@@ -4,8 +4,6 @@ import {
   StyleSheet, 
   Dimensions, 
   Image, 
-  TouchableHighlight,
-  Button,
   ImageBackground,
 } from 'react-native'
 
