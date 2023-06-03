@@ -40,6 +40,10 @@ const WIDTH = Dimensions.get('window').width
 
 export default function NotesScreen(props) {      
       const [data, setData] = useState([])
+      const [data2, setData2] = useState([])
+
+      const [img, setimg] = useState(0);
+      
       const [note, setNote] = useState("")
       const [date, setDate] = useState("")
 
@@ -64,10 +68,17 @@ export default function NotesScreen(props) {
         )
       }, [])  
 
-      const [img, setimg] = useState(0);
-
+      useEffect(() => {
+        fetch(`https://find-a-champ-working-version.onrender.com/finds/get/${String(props.user)}`).then(
+          res => res.json()
+        ).then(
+          data2 => {
+            setData2(data2)
+          }
+        )
+      }, [])  
       
-      if(data.length === 0){
+      if(data.length === 0 || data2.length === 0){
         console.log('negative')
       }
       else{
@@ -103,7 +114,7 @@ export default function NotesScreen(props) {
               </ScrollView>
             </View>
               <View style={{flexDirection:'column', alignItems:'flex-start', top:10, paddingLeft:25}}>
-              <Text style={{color: '#493003', alignSelf: 'flex-start'}}>{date_f(obj['date'])}</Text>
+              <Text style={{color: '#493003', alignSelf: 'flex-start'}}>{date_f(obj['date'])} | {data2[img]['species']}</Text>
               <Text style={{fontWeight: 'bold', color: '#493003', paddingBottom: HEIGHT-0.98*HEIGHT}}>{obj['content']}</Text>            
               <TextInput placeholder='Enter your note! (Max 500 characters)' placeholderTextColor='gray' style={{backgroundColor: 'white', borderRadius: 10, top: 10, height: HEIGHT-0.7*HEIGHT, marginBottom: 10, padding: 15, paddingTop: 15, width: WIDTH-WIDTH*0.15, alignSelf:'flex-start',}} numberOfLines={12} multiline={true} editable={true} maxLength={500} onChangeText={text => setNote(text)}/>
               <Button title="Save Note!" color="#493003" borderRadius={10} onPress={() => insertContent()}/>

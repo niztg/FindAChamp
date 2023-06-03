@@ -18,6 +18,7 @@ import Line from "../components/Line"
 
 const HEIGHT = Dimensions.get('window').height
 const IMAGE = {uri: 'https://i.imgur.com/9pJlwyq.png'}
+ 
 
 export default function Plaza(props){ 
 
@@ -33,18 +34,18 @@ useEffect(() => {
   )
 }, [])  
 
-const [dataa, setDataa] = useState([])
+const [data2, setData2] = useState([])
 useEffect(() => {
   fetch(`https://find-a-champ-working-version.onrender.com/finds/get/${String(props.user)}`).then(
     res => res.json()
   ).then(
-    dataa => {
-      setDataa(dataa)
+    data2 => {
+      setData2(data2)
     }
   )
 }, [])
 
-if(data.length === 0 || dataa.length === 0){
+if(data.length === 0 || data2.length === 0){
   console.log('negative')
 }
 else{
@@ -54,7 +55,7 @@ else{
     <SafeAreaView>
       <ScrollView>
       <View><Text  style={styles.title_text} >Good morning, {data['account_name']}.</Text></View>
-      <HomeImages user={data['account_name']} images={dataa}/>
+      <HomeImages user={data['account_name']} images={data2}/>
       <Line/>
       </ScrollView>
     </SafeAreaView>
