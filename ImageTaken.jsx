@@ -28,7 +28,7 @@ const ImageTaken = ({ image, setscreenComp, asset, setMushroomType }) => {
       name: "image.jpg",
     });
     axios
-      .post("http://192.168.50.187:5000/mushroom", formData, {
+      .post("My IP Adress/mushroom", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
