@@ -23,17 +23,19 @@ class account_info(db.Model):
     email = db.Column(db.Text)
     id = db.Column(db.Integer, primary_key=True)
     dob = db.Column(db.DateTime)
+    email_verified = db.Column(db.Boolean, default=False)
 
-    def __init__(self, account_name, password, email, id, dob):
+    def __init__(self, account_name, password, email, id, dob, email_verified):
         self.account_name = account_name
         self.password = password
         self.email = email
         self.id = id
         self.dob = dob
+        self.email_verified = email_verified
 
 class AccountSchema(ma.Schema):
     class Meta:
-        fields = ('account_name', 'password', 'email', 'id', 'dob')
+        fields = ('account_name', 'password', 'email', 'id', 'dob', 'email_verified')
 
 account_schema = AccountSchema()
 accounts_schema = AccountSchema(many=True)
@@ -78,6 +80,45 @@ class FindSchema(ma.Schema):
 find_schema = FindSchema()
 finds_schema = FindSchema(many=True)
 
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    hashed_password = hashlib.sha512(password.encode('utf-8')).hexdigest()
+
+    account = account_info.query.filter_by(account_name=username, password=hashed_password).first()
+
+    if account:
+        #valid
+        return jsonify({'message': 'Login successful', 'account': account_schema.dump(account)})
+    else:
+        #invalid
+        return jsonify({'message': 'Invalid username or password'})
+
+@app.route('/register', methods=['POST'])
+def register():
+    account_name = request.json.get('username')
+    email = request.json.get('email')
+    password = request.json.get('password')
+
+
+    existing_account = account_info.query.filter_by(email=email).first()
+    if existing_account:
+        return jsonify({'message': 'Email already exists'})
+
+    hashed_password = hashlib.sha512(password.encode('utf-8')).hexdigest()
+
+    id = random.randint(100000000, 999999999)
+    dob = date.today()
+
+    new_account = account_info(account_name=account_name, password=hashed_password, email=email,id=id, dob=dob, email_verified=False)
+    db.session.add(new_account)
+    db.session.commit()
+
+    return jsonify({'message': 'User registered successfully'})
+
+
+
 @app.route('/notes/get/<author>', methods = ['GET'])
 def get_author(author):
     note = notes.query.all()
@@ -109,9 +150,12 @@ def get_author_finds(id):
     return jsonify(results)
 
 @app.route('/edit/<id>/<date>', methods=['POST'])
-def edit_note(id, date):
+def add_note(id, date):
     user_ = notes.query.filter_by(author=int(id), date=date)
 
     user_.content = request.json('content')
 
     db.session.commit()
+
+if __name__ == "__main__":
+    db.create_all()
