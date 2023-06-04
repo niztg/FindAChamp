@@ -4,6 +4,8 @@ import {
   StyleSheet, 
   Dimensions, 
   Image, 
+  TouchableHighlight,
+  Button,
   ImageBackground,
 } from 'react-native'
 
@@ -41,6 +43,7 @@ return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
 export default function Account(props){  
 
+const [time, setTime] = useState(0)
 const [data, setData] = useState([])
 
 useEffect(() => {
@@ -68,64 +71,81 @@ useEffect(() => {
 
 const [img, setimg] = useState(0);
 
-if (data.length === 0 || data2.length === 0){
+if (data.length === 0){
   console.log('negative')
 }
+
 else{
-  obj = data2[img]
-  onchange = (nativeEvent) => {
-    if(nativeEvent){
-      const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-      if (slide !== img && slide < data2.length){
-        setimg(slide)
-      }
+  if (data2.length === 0){
+    new Promise(resolve => setTimeout(resolve, 10000))
+    setTime(time + 10)
+
+    if(time === 100 && data2.length === 0 ){
+      setData2([{
+        "url": "https://i.imgur.com/FbJd63q.jpg",
+        "species": " Click camera and start exploring!",
+        "found": Date(),
+        "id": props.user
+
+      }])
+      setTime(0)
     }
   }
-
-    return (
-      <View>
-        <ImageBackground style={{flex: 1, justifyContent:'center', width: WIDTH, height: HEIGHT}} source={IMAGE} resizeMode='cover'/>
-      <View style={styles.whole}>
-        <ScrollView>
-        <View style={{flexDirection:'row', paddingTop: HEIGHT-0.9*HEIGHT}}>
-          <Text style={styles.title_text}>{data['account_name']}</Text>
-          <Text paddingTop={42.5} style={{color:'#493003', fontStyle:'italic'}}>{data['id']}</Text>
-        </View>
-
-        <View style={{flexDirection:'column', padding:20, paddingTop: 5, paddingLeft: 30}}>
-          <Text style={{color:'#493003', fontSize:20}}>{data['email']}</Text>
-        </View>
-
-        <Line/>
-
-        <SafeAreaView style={{flex: 1, height: HEIGHT/2}}>
-          <Text style={styles.title_text}>
-            Your finds ({data2.length})
-          </Text>
-          <View style={styles.ovr_wrap}>
-            <ScrollView 
-            onScroll={({nativeEvent}) => onchange(nativeEvent)}
-            showsHorizontalScrollIndicator={true}
-            pagingEnabled
-            horizontal
-            style={styles.wrap}
-            >
-              {
-                data2.map((e, index) => <Image key={e['url']} resizeMode='cover' style={styles.wrap} source={{uri: e['url']}}/>)
-              }
-            </ScrollView>
+  else{    
+    obj = data2[img]
+    onchange = (nativeEvent) => {
+      if(nativeEvent){
+        const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+        if (slide !== img && slide < data2.length){
+          setimg(slide)
+        }
+      }
+    }
+  
+      return (
+        <View>
+          <ImageBackground style={{flex: 1, justifyContent:'center', width: WIDTH, height: HEIGHT}} source={IMAGE} resizeMode='cover'/>
+        <View style={styles.whole}>
+          <ScrollView>
+          <View style={{flexDirection:'row', paddingTop: HEIGHT-0.9*HEIGHT}}>
+            <Text style={styles.title_text}>{data['account_name']}</Text>
+            <Text paddingTop={42.5} style={{color:'#493003', fontStyle:'italic'}}>{data['id']}</Text>
           </View>
-            <View style={{flexDirection:'column', alignItems:'flex-start', top:10, paddingLeft:25}}>
-            <Text style={{color: '#493003', alignSelf: 'flex-start'}}>{date(obj['found'])}</Text>
-            <Text style={{fontWeight: 'bold', color: '#493003'}}>Species: {obj['species']}</Text>
-            <Text style={{fontStyle: 'italic'}}>Navigate to the notes tab to see notes about this find!</Text>
+  
+          <View style={{flexDirection:'column', padding:20, paddingTop: 5, paddingLeft: 30}}>
+            <Text style={{color:'#493003', fontSize:20}}>{data['email']}</Text>
           </View>
-        </SafeAreaView>
-        <Line/>
-        </ScrollView>
-      </View>
-      </View>
-    )
+  
+          <Line/>
+  
+          <SafeAreaView style={{flex: 1, height: HEIGHT/2}}>
+            <Text style={styles.title_text}>
+              Your finds ({data2.length})
+            </Text>
+            <View style={styles.ovr_wrap}>
+              <ScrollView 
+              onScroll={({nativeEvent}) => onchange(nativeEvent)}
+              showsHorizontalScrollIndicator={true}
+              pagingEnabled
+              horizontal
+              style={styles.wrap}
+              >
+                {
+                  data2.map((e, index) => <Image key={e['url']} resizeMode='cover' style={styles.wrap} source={{uri: e['url']}}/>)
+                }
+              </ScrollView>
+            </View>
+              <View style={{flexDirection:'column', alignItems:'flex-start', top:10, paddingLeft:25}}>
+              <Text style={{color: '#493003', alignSelf: 'flex-start'}}>{date(obj['found'])}</Text>
+              <Text style={{fontWeight: 'bold', color: '#493003'}}>Species: {obj['species']}</Text>
+              <Text style={{fontStyle: 'italic'}}>Navigate to the notes tab to see notes about this find!</Text>
+            </View>
+          </SafeAreaView>
+          <Line/>
+          </ScrollView>
+        </View>
+        </View>
+      )}
 }
 };
 

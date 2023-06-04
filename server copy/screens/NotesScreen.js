@@ -8,6 +8,7 @@ import {
   Image, 
   TextInput, 
   ImageBackground, 
+  Alert,
   Button
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -37,7 +38,10 @@ const WIDTH = Dimensions.get('window').width
 
     const IMAGE = {uri: 'https://i.imgur.com/9pJlwyq.png'}
 
-export default function NotesScreen(props) {      
+export default function NotesScreen(props) {   
+  
+      const [time, setTime] = useState(0)
+
       const [data, setData] = useState([])
       const [data2, setData2] = useState([])
 
@@ -78,7 +82,25 @@ export default function NotesScreen(props) {
       }, [])  
       
       if(data.length === 0 || data2.length === 0){
-        console.log('negative')
+        new Promise(resolve => setTimeout(resolve, 10000))
+        setTime(time + 10)
+
+        if(time === 100 && data.length === 0 || time === 100 && data2.length === 0){
+          setData([{
+            "content": "You do not have any notes. Start exploring!",
+            "url": "https://i.imgur.com/FbJd63q.jpg",
+            "author": props.user,
+            "date": Date()
+          }])
+          setData2([{
+            "url": "https://i.imgur.com/FbJd63q.jpg",
+            "species": " Click camera and start exploring!",
+            "found": Date(),
+            "id": props.user
+    
+          }])
+          setTime(0)
+        }
       }
       else{
         obj = data[img]

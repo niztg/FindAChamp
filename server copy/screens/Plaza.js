@@ -22,6 +22,7 @@ const IMAGE = {uri: 'https://i.imgur.com/9pJlwyq.png'}
 
 export default function Plaza(props){ 
 
+const [time, setTime] = useState(0)
 const [data, setData] = useState([])
 
 useEffect(() => {
@@ -45,10 +46,25 @@ useEffect(() => {
   )
 }, [])
 
-if(data.length === 0 || data2.length === 0){
+if(data.length === 0){
   console.log('negative')
 }
 else{
+  if (data2.length === 0){
+    new Promise(resolve => setTimeout(resolve, 10000))
+    setTime(time + 10)
+
+    if(time === 100 && data2.length === 0 ){
+      setData2([{
+        "url": "https://i.imgur.com/FbJd63q.jpg",
+        "species": " Click camera and start exploring!",
+        "found": Date(),
+        "id": props.user
+
+      }])
+      setTime(0)
+    }
+  }
   return (
     <View>
   <ImageBackground style={{flex: 1, justifyContent:'center', width: Dimensions.get('window').width, height: Dimensions.get('window').height}} source={IMAGE} resizeMode='cover'/>
