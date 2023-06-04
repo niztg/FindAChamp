@@ -85,18 +85,18 @@ finds_schema = FindSchema(many=True)
 
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.json.get('username')
+    email = request.json.get('email')
     password = request.json.get('password')
     hashed_password = hashlib.sha512(password.encode('utf-8')).hexdigest()
 
-    account = account_info.query.filter_by(account_name=username, password=hashed_password).first()
+    account = account_info.query.filter_by(email=email, password=hashed_password).first()
 
     if account:
         #valid
         return jsonify({'message': 'Login successful', 'account': account_schema.dump(account)})
     else:
         #invalid
-        return jsonify({'message': 'Invalid username or password'})
+        return jsonify({'message': 'Invalid email or password'})
 
 @app.route('/register', methods=['POST'])
 def register():
