@@ -8,7 +8,6 @@ import {
   Image, 
   TextInput, 
   ImageBackground, 
-  Alert,
   Button
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
