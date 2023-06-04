@@ -8,20 +8,11 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import { theme } from '../core/theme';
-//import Auth0 from 'react-native-auth0';
-//import SQLite from 'react-native-sqlite-storage';
+
 var sha512 = require('js-sha512');
 
-//const auth0Config = {
-//  domain: "dev-2lijd8z8mrczim5h.us.auth0.com",
-//  clientId: "DxY9zznu6ZY1jdPPACxzbXgBoFyMgRCq",
-//};
-
-//const auth0 = new Auth0(auth0Config);
-//const db = SQLite.openDatabase({ name: 'accounts.db', createFromLocation: 1 });
-
 const RegisterScreen = ({ navigation }) => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -32,7 +23,7 @@ const RegisterScreen = ({ navigation }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       if (!response.ok) {
@@ -62,10 +53,10 @@ const RegisterScreen = ({ navigation }) => {
       <Logo />
       <Header>Create Account</Header>
       <TextInput
-        label="Name"
+        label="Username"
         returnKeyType="next"
-        value={name}
-        onChangeText={text => setName(text)}
+        value={username}
+        onChangeText={text => setUsername(text)}
       />
       <TextInput
         label="Email"
