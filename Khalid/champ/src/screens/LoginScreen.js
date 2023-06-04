@@ -17,13 +17,22 @@ const LoginScreen = ({ navigation }) => {
 
   const login = async () => {
     try {
-      const response = await fetch('http://192.168.86.164:19000/login', {
+      const response = await fetch('https://find-a-champ-working-version.onrender.com/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
+
+      if (!response.ok) {
+        throw new Error('Request Failed with status ' + response.status);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Unexpected response content type: ' + contentType);
+      }
+
       const data = await response.json();
 
       if (data.message === 'Login successful') {
@@ -34,6 +43,7 @@ const LoginScreen = ({ navigation }) => {
       }
     } catch (error) {
       console.error(error);
+      Alert.alert('Error! please try again later.')
     }
   };
 

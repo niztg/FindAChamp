@@ -107,7 +107,7 @@ def register():
 
     existing_account = account_info.query.filter_by(email=email).first()
     if existing_account:
-        return jsonify({'message': 'Email already exists'})
+        return jsonify({'message': 'Email already exists'}), 400
 
     hashed_password = hashlib.sha512(password.encode('utf-8')).hexdigest()
 
@@ -118,7 +118,15 @@ def register():
     db.session.add(new_account)
     db.session.commit()
 
-    return jsonify({'message': 'User registered successfully'})
+    return jsonify({'message': 'User registered successfully'}), 201
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({'error': 'Not found'}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({'error':'Interal server error'}), 500
 
 
 
@@ -162,4 +170,4 @@ def add_note(id, date):
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(host='http://192.168.86.164', port=19000, debug=True)
+    app.run(host='https://find-a-champ-working-version.onrender.com', port=19000, debug=True)

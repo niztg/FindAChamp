@@ -27,13 +27,22 @@ const RegisterScreen = ({ navigation }) => {
 
   const onSignUpPressed = async () => {
     try {
-      const response = await fetch('http://192.168.86.164:19000/register', {
+      const response = await fetch('https://find-a-champ-working-version.onrender.com/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, email, password }),
       });
+
+      if (!response.ok) {
+        throw new Error('Request Failed with status ' + response.status);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Unexpected response content type: ' + contentType);
+      }
+
       const data = await response.json();
 
       if (data.message === 'Email already exists') {
@@ -43,6 +52,7 @@ const RegisterScreen = ({ navigation }) => {
 		}
 	} catch (error) {
       console.error(error);
+      Alert.alert('Error. Please try again later!');
     }
   };
 
