@@ -7,13 +7,13 @@ from src.functions import create_account
 from src.notes import create_note
 from src.accounts import Account
 from datetime import datetime
-
+import random
 import hashlib
 from datetime import date
 
 app = flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////Users/nizcomix/Mushroom Identifier/db/master.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///master.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -48,7 +48,7 @@ class notes(db.Model):
     content = db.Column(db.Text)
     url = db.Column(db.Text, primary_key=True)
     author = db.Column(db.Integer)
-    date = db.Column(db.DateTime)
+    date = db.Column(db.String)
 
     def __init__(self, content, url, author, date):
         self.content = content
@@ -67,7 +67,7 @@ notes_schema = NotesSchema(many=True)
 class finds(db.Model):
     id = db.Column(db.Integer)
     url = db.Column(db.String)
-    found = db.Column(db.DateTime, primary_key=True)
+    found = db.Column(db.String, primary_key=True)
     species = db.Column(db.String)
 
     def __init__(self, id, url, found, species):
@@ -85,18 +85,18 @@ finds_schema = FindSchema(many=True)
 
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.json.get('username')
+    email = request.json.get('email')
     password = request.json.get('password')
     hashed_password = hashlib.sha512(password.encode('utf-8')).hexdigest()
 
-    account = account_info.query.filter_by(account_name=username, password=hashed_password).first()
+    account = account_info.query.filter_by(email=email, password=hashed_password).first()
 
     if account:
         #valid
         return jsonify({'message': 'Login successful', 'account': account_schema.dump(account)})
     else:
         #invalid
-        return jsonify({'message': 'Invalid username or password'})
+        return jsonify({'message': 'Invalid email or password'})
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -107,7 +107,7 @@ def register():
 
     existing_account = account_info.query.filter_by(email=email).first()
     if existing_account:
-        return jsonify({'message': 'Email already exists'})
+        return jsonify({'message': 'Email already exists'}), 400
 
     hashed_password = hashlib.sha512(password.encode('utf-8')).hexdigest()
 
@@ -118,7 +118,15 @@ def register():
     db.session.add(new_account)
     db.session.commit()
 
-    return jsonify({'message': 'User registered successfully'})
+    return jsonify({'message': 'User registered successfully'}), 201
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({'error': 'Not found'}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({'error':'Interal server error'}), 500
 
 
 
@@ -134,9 +142,27 @@ def get_author(author):
 def add_note():
     content = request.json['content']
     url = request.json['url']
-    id = request.json['id']
+    author = request.json['author']
+    date = request.json['date']
     
-    create_note(Account.retrieve_info(id), content, url)
+    new_note = notes(content=content, url=url, author=author, date=date)
+    db.session.add(new_note)
+    db.session.commit()
+    
+    return jsonify({'message': 'Note added successfully'}), 201
+
+@app.route('/finds/add/', methods=['POST'])
+def add_find():
+    species = request.json['species']
+    url = request.json['url']
+    id = request.json['id']
+    found = request.json['found']
+    
+    new_find = finds(species=species, url=url, id=id, found=found)
+    db.session.add(new_find)
+    db.session.commit()
+    
+    return jsonify({'message': 'Note added successfully'}), 201
 
 @app.route('/accounts/get/<id>', methods=['GET'])
 def get_account(id):
@@ -153,13 +179,10 @@ def get_author_finds(id):
     return jsonify(results)
 
 @app.route('/edit/<id>/<date>', methods=['POST'])
-def add_note(id, date):
+def edit_note(id, date):
     user_ = notes.query.filter_by(author=int(id), date=date)
-
-    user_.content = request.json('content')
-
+    user_.content = request.json['content']
     db.session.commit()
-
-if __name__ == "__main__":
+    
+with app.app_context():
     db.create_all()
-    app.run(host='http://192.168.86.164', port=19000, debug=True)
