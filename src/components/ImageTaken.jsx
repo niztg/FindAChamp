@@ -34,7 +34,7 @@ const ImageTaken = ({
       name: "image.jpg",
     });
     axios
-      .post("http://192.168.50.187:5000/mushroom", formData, {
+      .post("IP ADDRESS:5000/mushroom", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
