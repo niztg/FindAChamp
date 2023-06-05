@@ -21,10 +21,12 @@ Run in terminal
 ```
 npm install
 ```
-- Change your directory to `server copy` by running in terminal:
+- Run in the terminal:
 ```
-cd server copy
+python app.py
 ```
+This will initiate the machine learning files.
+
 - Run in the terminal:
 ```
 npx expo start
