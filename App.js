@@ -9,9 +9,13 @@ import {
   RegisterScreen,
   ResetPasswordScreen,
   Dashboard,
-  // TakeImage
+  Plaza,
+  Account,
+  NotesScreen,
+  CameraMainScreen,
+  DisplayMushroom,
 } from "./src/screens";
-import Plaza from "./src/screens/Plaza";
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -38,6 +42,16 @@ export default function App() {
           />
           <Stack.Screen name="Plaza">
             {(props) => <Plaza {...props} id={id} />}
+          </Stack.Screen>
+          <Stack.Screen name="NotesScreen">
+            {(props) => <NotesScreen {...props} id={id} />}
+          </Stack.Screen>
+          <Stack.Screen name="Account">
+            {(props) => <Account {...props} id={id} />}
+          </Stack.Screen>
+          <Stack.Screen name="CameraMainScreen" component={CameraMainScreen} />
+          <Stack.Screen name="DisplayMushroom">
+            {(props) => <DisplayMushroom {...props} id={id} />}
           </Stack.Screen>
           {/* <Stack.Screen name="TakeImage" component={TakeImage} /> */}
         </Stack.Navigator>

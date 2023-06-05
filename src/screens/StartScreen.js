@@ -1,36 +1,37 @@
 //*! Start.js v1.0 June 1 2023
 
-import React from 'react'
-import Background from '../components/Background'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import Button from '../components/Button'
-import Paragraph from '../components/Paragraph'
-import { View, StyleSheet, Text } from 'react-native';
-import { theme } from '../core/theme'
-
+import React from "react";
+import Background from "../components/Background";
+import Logo from "../components/Logo";
+import Header from "../components/Header";
+import Button from "../components/Button";
+import Paragraph from "../components/Paragraph";
+import { View, StyleSheet, Text } from "react-native";
+import { theme } from "../core/theme";
+import Navbar from "../components/Navbar";
 
 export default function StartScreen({ navigation }) {
   return (
     <Background style={styles.container}>
       <View style={styles.logoContainer}>
         <Logo />
-        <Text style={styles.logoText}>Find a{'\n'}Champ!</Text>
+        <Text style={styles.logoText}>Find a{"\n"}Champ!</Text>
       </View>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate('LoginScreen')}
+        onPress={() => navigation.navigate("LoginScreen")}
       >
         Login
       </Button>
       <Button
         mode="outlined"
-        onPress={() => navigation.navigate('RegisterScreen')}
+        onPress={() => navigation.navigate("RegisterScreen")}
       >
         Sign Up
       </Button>
       <Text style={styles.finePrint}>
-        By using our application, I agree to Find a Champ's <Text style={styles.link}>Terms of Service</Text> 
+        By using our application, I agree to Find a Champ's{" "}
+        <Text style={styles.link}>Terms of Service</Text>
       </Text>
     </Background>
   );
@@ -38,48 +39,48 @@ export default function StartScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E6D6B6',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#E6D6B6",
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 30,
   },
   logoText: {
-    color: '#493003',
+    color: "#493003",
     fontSize: 48,
-    fontFamily: 'Catamaran',
+    fontFamily: "Catamaran",
     marginLeft: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   header: {
     fontSize: 36,
-    fontFamily: 'Catamaran',
+    fontFamily: "Catamaran",
     marginBottom: 20,
   },
   paragraph: {
     fontSize: 24,
-    fontFamily: 'Catamaran',
+    fontFamily: "Catamaran",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   button: {
-    width: '80%',
+    width: "80%",
     height: 80,
     marginBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   finePrint: {
     fontSize: 16,
-    fontFamily: 'Catamaran',
+    fontFamily: "Catamaran",
     marginTop: 30,
-    textAlign: 'center',
+    textAlign: "center",
   },
   link: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
-    },
+  },
 });

@@ -6,7 +6,7 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-
+import Navbar from "../components/Navbar";
 import React from "react";
 
 import { ScrollView } from "react-native-gesture-handler";
@@ -14,12 +14,10 @@ import { useEffect, useState } from "react";
 
 import HomeImages from "../components/HomeImages";
 import Line from "../components/Line";
-
 const HEIGHT = Dimensions.get("window").height;
 const IMAGE = { uri: "https://i.imgur.com/9pJlwyq.png" };
 
-export default function Plaza({ id }) {
-  const [time, setTime] = useState(0);
+export default function Plaza({ navigation, id }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -43,8 +41,19 @@ export default function Plaza({ id }) {
     )
       .then((res) => res.json())
       .then((data2) => {
-        console.log(data2);
-        setData2(data2);
+        console.log(data, data2, "shippopu");
+        if (data2.length == 0) {
+          setData2([
+            {
+              url: "https://i.imgur.com/FbJd63q.jpg",
+              species: " Click camera and start exploring!",
+              found: Date(),
+              id: id,
+            },
+          ]);
+        } else {
+          setData2(data2);
+        }
       });
   }, []);
   console.log("damn boy", data, data2);
@@ -52,7 +61,7 @@ export default function Plaza({ id }) {
     console.log("negative");
   } else {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <ImageBackground
           style={{
             flex: 1,
@@ -63,17 +72,18 @@ export default function Plaza({ id }) {
           source={IMAGE}
           resizeMode="cover"
         />
-        <SafeAreaView>
-          <ScrollView>
-            <View>
-              <Text style={styles.title_text}>
-                Good morning, {data["account_name"]}.
-              </Text>
-            </View>
+        <ScrollView>
+          <View>
+            <Text style={styles.title_text}>
+              Good morning, {data["account_name"]}.
+            </Text>
+          </View>
+          {data2 && data2.length > 0 && (
             <HomeImages user={data["account_name"]} images={data2} />
-            <Line />
-          </ScrollView>
-        </SafeAreaView>
+          )}
+          <Line />
+        </ScrollView>
+        <Navbar navigation={navigation} />
       </View>
     );
   }
