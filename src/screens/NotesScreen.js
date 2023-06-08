@@ -1,3 +1,6 @@
+// This file contains the Notes display screen
+// NotesScreen.js v1.0
+
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -14,6 +17,8 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Navbar from "../components/Navbar";
+
+// device-specific height and width
 const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
 
@@ -31,15 +36,25 @@ const months = {
   10: "November",
   11: "December",
 };
+// as mentioned in other files, this is necessary as js doesn't have the Gregorian calendar names for months built in.
 
+// function to format the date string
 function date_f(date_str) {
   d = new Date(date_str);
   return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
 
+// background image
 const IMAGE = { uri: "https://i.imgur.com/9pJlwyq.png" };
 
 export default function NotesScreen({ navigation, id }) {
+  /*properties in order:
+    - data: notes data (contains notes)
+    - data2: finds data (contains species)
+    - img: index of scroll menu 
+    - note: The note the user enters in the input textbox or the content of the given note in the scroll menu
+    - date: the date of the given find in the scroll menu 
+    */
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
 
@@ -48,6 +63,7 @@ export default function NotesScreen({ navigation, id }) {
   const [note, setNote] = useState("");
   const [date, setDate] = useState("");
 
+  // function which handles posting new notes.
   const insertContent = () => {
     fetch(
       `https://find-a-champ-working-version.onrender.com/edit/${String(
@@ -63,6 +79,8 @@ export default function NotesScreen({ navigation, id }) {
     ).then((resp) => resp.json());
   };
 
+  // two API requests, one to notes and one to finds
+  // configured such that if the requests turn up blank the user is assigned a placeholder value.
   useEffect(() => {
     fetch(
       `https://find-a-champ-working-version.onrender.com/notes/get/${String(
@@ -114,6 +132,7 @@ export default function NotesScreen({ navigation, id }) {
   } else {
     obj = data[img];
 
+    // sliding mechanics
     onchange = (nativeEvent) => {
       if (nativeEvent) {
         const slide = Math.ceil(
