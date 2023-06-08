@@ -1,3 +1,6 @@
+<h1>Find a Champ</h1>
+_Find a Champ_ is a mobile app which allows users to take pictures of and identify mushrooms they find in their travels. Intended for mushroom enthusiasts of all forms, Find a Champ offers an intuitive way to store all the mushrooms you find along your travels and retain information regarding them. With a slick and minimalistic UI, Find a Champ allows users to take pictures of mushrooms and have them automatically identified by a robust machine learning algorithm, and store notes about all their finds for future reference. The clients, Tamir’s parents, are avid nature venturers and Find a Champ gives them an easy and compact way to enrich their travels with this educational and practical app.
+
 **GETTING STARTED**
 - Change directory to the desired location 
 ```
