@@ -1,3 +1,6 @@
+// This file is used in formatting a simple line for the account and home screens
+// Line.js v1.0
+
 import React from 'react'
 import { Component } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
