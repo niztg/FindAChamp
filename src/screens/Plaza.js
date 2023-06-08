@@ -1,3 +1,6 @@
+// This file contains the main menu of Find a Champ
+// Plaza.js v1.0
+
 import {
   View,
   SafeAreaView,
@@ -14,6 +17,13 @@ import { useEffect, useState } from "react";
 
 import HomeImages from "../components/HomeImages";
 import Line from "../components/Line";
+
+/* all things mentioned in other files (Accounts.js, NotesScreen.js) continue to apply
+- height and width specific to device
+- Two API requests (accounts for account info, finds for finds)
+- User is assigned a placeholder find if API request to finds shows up blank.
+*/
+
 const HEIGHT = Dimensions.get("window").height;
 const IMAGE = { uri: "https://i.imgur.com/9pJlwyq.png" };
 
@@ -57,6 +67,7 @@ export default function Plaza({ navigation, id }) {
       });
   }, []);
   console.log("damn boy", data, data2);
+  {/* Good stuff here */}
   if (data.length === 0) {
     console.log("negative");
   } else {
