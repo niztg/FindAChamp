@@ -1,3 +1,6 @@
+// This file contains the Account screen
+// Accounts.js v1.0
+
 import {
   View,
   Text,
@@ -14,6 +17,7 @@ import Line from "../components/Line";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// Fetch width and height properties that are unique to device
 const WIDTH = Dimensions.get("window").width;
 const HEIGHT = Dimensions.get("window").height;
 
@@ -31,15 +35,19 @@ const months = {
   10: "November",
   11: "December",
 };
+// as js's `Date` object doesn't have a method that formats the integer value for month into its English equivalent we must use this
 
+// background image
 const IMAGE = { uri: "https://i.imgur.com/9pJlwyq.png" };
 
+// formats date string
 function date(date_str) {
   d = new Date(date_str);
   return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
 
 export default function Account({ navigation, id }) {
+  /*two API calls are made: one to the accounts route which fetches base account info. Another is made to the finds route to fetch info about the user's finds including the find's species but not notes*/
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -62,6 +70,7 @@ export default function Account({ navigation, id }) {
         id
       )}`
     )
+    /*If data2 turns up blank, this means that the user has no finds associated with their user id. As such, we give them a placeholder find.*/
       .then((res) => res.json())
       .then((data2) => {
         if (data2.length == 0) {
@@ -79,12 +88,17 @@ export default function Account({ navigation, id }) {
       });
   }, []);
 
+  /*img represents the index of the finds list. We use this in the scroll menu*/
   const [img, setimg] = useState(0);
 
   if (data.length === 0 || data2.length === 0) {
+    /*if either request turns up blank, we recognize that the app may be taking time to perform the request so we wait for it for a bit*/
     console.log("negative");
   } else {
+    /*sets the current image in the scroll menu to be the first item in the list as img's initial value is 0*/
     obj = data2[img];
+    
+    /*code which controls the sliding functionality*/
     onchange = (nativeEvent) => {
       if (nativeEvent) {
         const slide = Math.ceil(
@@ -139,7 +153,8 @@ export default function Account({ navigation, id }) {
             </View>
 
             <Line />
-
+            
+                {/*Code which formats the menu itself.*/}
             <SafeAreaView style={{ flex: 1, height: HEIGHT / 2 }}>
               <Text style={styles.title_text}>Your finds ({data2.length})</Text>
               <View style={styles.ovr_wrap}>
