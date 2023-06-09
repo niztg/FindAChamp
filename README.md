@@ -24,13 +24,13 @@ npx install-expo-modules@latest
 ```
 cd FindAChamp
 ```
-Run in terminal 
+Run in terminal
 ```
 npm install
 ```
 - Run in the terminal:
 ```
-python app.py
+python3 app.py
 ```
 This will initiate the machine learning files.
 
