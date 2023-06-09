@@ -5,7 +5,7 @@ Find a Champ is a mobile app which allows users to take pictures of and identify
 
 **GETTING STARTED**
 - Pull the GitHub repository onto your local machine. Please ensure that the branch of the repository being pulled is `master`; this is the main branch with all of the functioning code.
-- Ensure that `node.js` is downloaded on your machine and the `npx` command is working. Instructions on how to download node.js
+- Ensure that `node.js` is downloaded on your machine and the `npx` command is working.
 - Change directory to project folder ($cd FindAChamp)
 - Change directory to Machine Learning ($cd “Machine Learning”)
 - Install the machine learning requirements ($pip install -r requirements.txt)
