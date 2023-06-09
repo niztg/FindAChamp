@@ -2,6 +2,7 @@
 
 import { DefaultTheme } from 'react-native-paper'
 
+// colour theme hex codes
 export const theme = {
   ...DefaultTheme,
   colors: {

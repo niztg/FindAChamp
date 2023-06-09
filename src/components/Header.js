@@ -9,6 +9,7 @@ export default function Header(props) {
   return <Text style={styles.header} {...props} />
 }
 
+// styling
 const styles = StyleSheet.create({
   header: {
     fontSize: 21,

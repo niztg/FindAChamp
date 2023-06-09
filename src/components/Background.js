@@ -6,9 +6,11 @@ import { ImageBackground, StyleSheet, KeyboardAvoidingView } from 'react-native'
 export default function Background({ children }) {
   return (
     <ImageBackground
+    //background image
       source={require('../assets/gradient.png')}
       style={styles.background}
     >
+    {/* //auto adjust when keyboard appears */}
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         {children}
       </KeyboardAvoidingView>
@@ -16,6 +18,7 @@ export default function Background({ children }) {
   );
 }
 
+//styling
 const styles = StyleSheet.create({
   background: {
     flex: 1,

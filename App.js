@@ -16,6 +16,7 @@ import {
   DisplayMushroom,
 } from "./src/screens";
 
+// parent navigator
 const Stack = createStackNavigator();
 
 export default function App() {

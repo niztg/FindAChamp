@@ -1,5 +1,7 @@
 //*! search.js v1.0 June 1 2023
 
+// framework for searching
+
 const searchBox = document.getElementById('searchBox');
 
 searchBox.addEventListener('input', handleSearch);
@@ -7,13 +9,14 @@ searchBox.addEventListener('input', handleSearch);
 function handleSearch(event) {
   const searchTerm = event.target.value;
 
-  const searchResults = searchInDatabase(searchTerm);
+  const searchResults = searchDB(searchTerm);
 
   displayResults(searchResults);
 }
 
-function searchInDatabase(searchTerm) {
+function searchDB(searchTerm) {
 // sorted results (potential: use AJAX?)
+// depends on how info db (must be created first) is setup 
   const results = [
     { id: 1, name: 'item 1', category: 'category A',  },
     { id: 2, name: 'item 2', category: 'category B', },
@@ -23,7 +26,7 @@ function searchInDatabase(searchTerm) {
   ];
 
   const sortedResults = results.sort((a, b) => a.category - b.category);
-
+// binary search to find desired item
   let low = 0;
   let high = sortedResults.length - 1;
 

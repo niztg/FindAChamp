@@ -10,8 +10,10 @@ import { View, StyleSheet, Text } from "react-native";
 import { theme } from "../core/theme";
 import Navbar from "../components/Navbar";
 
+// child navigation
 export default function StartScreen({ navigation }) {
   return (
+    // formatting
     <Background style={styles.container}>
       <View style={styles.logoContainer}>
         <Logo />
@@ -37,6 +39,7 @@ export default function StartScreen({ navigation }) {
   );
 }
 
+// styling
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#E6D6B6",

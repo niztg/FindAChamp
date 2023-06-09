@@ -7,6 +7,7 @@ import { theme } from '../core/theme'
 
 export default function Button({ mode, style, ...props }) {
   return (
+    // formatting
     <PaperButton
       style={[
         styles.button,
@@ -19,7 +20,7 @@ export default function Button({ mode, style, ...props }) {
     />
   )
 }
-
+// styling
 const styles = StyleSheet.create({
   button: {
     width: '100%',

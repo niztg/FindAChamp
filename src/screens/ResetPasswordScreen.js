@@ -1,5 +1,7 @@
 //*! ResetPasswordScreen.js v1.0 June 1 2023
 
+// framework for a password resetting algoritm;
+
 import React, { useState } from "react";
 import Background from "../components/Background";
 import BackButton from "../components/BackButton";
@@ -9,6 +11,7 @@ import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import { emailValidator } from "../helpers/emailValidator";
 
+// child navigation
 export default function ResetPasswordScreen({ navigation }) {
   const [email, setEmail] = useState({ value: "", error: "" });
 

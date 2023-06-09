@@ -8,25 +8,17 @@ import Button from "../components/Button";
 import TextInput from "../components/TextInput";
 import BackButton from "../components/BackButton";
 import { theme } from "../core/theme";
-//import Auth0 from 'react-native-auth0';
-//import SQLite from 'react-native-sqlite-storage';
-var sha512 = require("js-sha512");
 
-//const auth0Config = {
-//  domain: "dev-2lijd8z8mrczim5h.us.auth0.com",
-//  clientId: "DxY9zznu6ZY1jdPPACxzbXgBoFyMgRCq",
-//};
-
-//const auth0 = new Auth0(auth0Config);
-//const db = SQLite.openDatabase({ name: 'accounts.db', createFromLocation: 1 });
-
+// child navigation
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // sign up button function
   const onSignUpPressed = async () => {
     try {
+      //api request
       const response = await fetch(
         "https://find-a-champ-working-version.onrender.com/register",
         {
@@ -37,7 +29,8 @@ const RegisterScreen = ({ navigation }) => {
           body: JSON.stringify({ username, email, password }),
         }
       );
-
+      
+      //error handling
       if (!response.ok) {
         throw new Error("Request Failed with status " + response.status);
       }
@@ -60,6 +53,7 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
+    //formatting
     <Background>
       <BackButton goBack={navigation.goBack} />
       <Logo />
@@ -105,6 +99,7 @@ const RegisterScreen = ({ navigation }) => {
   );
 };
 
+//styles
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
