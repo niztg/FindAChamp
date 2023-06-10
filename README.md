@@ -19,3 +19,8 @@ Find a Champ is a mobile app which allows users to take pictures of and identify
 - Scan the QR code in order to access the server 
 - Alternatively: input the address to the app.
 - usually in the format {expo:// $$$.$$$.$.$:PORT}
+
+<br>
+<br>
+Developer note:
+Repository from which REST API and other backend modules run can be found at the following link: https://github.com/TamirPol/FindAChampForked
