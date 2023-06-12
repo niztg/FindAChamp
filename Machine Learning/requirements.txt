@@ -1,0 +1,5 @@
+﻿flask==2.0.1
+flask-cors==3.0.10
+tensorflow==2.5.0
+pillow==8.2.0
+matplotlib==3.4.3

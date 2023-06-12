@@ -1,0 +1,6 @@
+node_modules/
+.expo/
+
+"Machine Learning"/__pycache__
+"Machine Learning"/node_modules
+Machine Learning/training/

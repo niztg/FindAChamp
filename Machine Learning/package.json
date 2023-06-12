@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "click": "^0.1.0",
+    "flask": "^0.2.10"
+  }
+}
