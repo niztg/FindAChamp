@@ -25,4 +25,5 @@ Find a Champ is a mobile app which allows users to take pictures of and identify
 <br>
 Developer note:
 Repository from which REST API and other backend modules run can be found at the following link: https://github.com/TamirPol/FindAChampBackendAPI
+Developers: Tamir Polyakov, Nizamullah Ansari, Khalid Bedir
 
